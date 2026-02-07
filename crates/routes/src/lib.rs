@@ -1,14 +1,16 @@
-mod index;
 mod prelude;
+mod index;
+mod log;
 
 pub mod apis {
     use super::{prelude::*, *};
-    use aide::{axum::ApiRouter, openapi::OpenApi};
+    use aide::{axum::ApiRouter, openapi::{OpenApi, Tag}};
 
-    pub fn route_settings(_state: Arc<services::AppState>) -> (ApiRouter, OpenApi) {
-        [
+    pub fn route_settings(state: Arc<services::AppState>) -> (ApiRouter, OpenApi) {
+        let (app, mut api) = [
             // Add routes here
             index::get_router(),
+            log::get_router(state)
         ]
         .into_iter()
         .fold(
@@ -20,7 +22,12 @@ pub mod apis {
                 };
                 (app.merge(route.1), api)
             },
-        )
+        );
+        api.tags.push(Tag{
+            name: "log".to_string(),
+            description: Some("Logging routes".to_string()), ..Default::default()
+        });
+        (app, api)
     }
 
     use aide::swagger::Swagger;

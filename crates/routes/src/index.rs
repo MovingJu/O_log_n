@@ -1,7 +1,7 @@
 use aide::axum::{ApiRouter, routing::get};
 use axum::{
     Json,
-    response::{Html, Redirect},
+    response::Redirect,
 };
 use log::info;
 
@@ -18,22 +18,14 @@ pub fn get_router() -> (Option<Tag>, ApiRouter) {
         }),
         ApiRouter::new()
             .api_route("/", get(index))
-            .api_route("/test", get(test))
             .api_route("/is_alive", get(is_alive))
             .with_tag("Index"),
     )
 }
 
-/// index
-/// Redirects to /docs, which is swagger api document.
 pub async fn index() -> Redirect {
     info!("redirect user to docs");
     Redirect::to("/docs")
-}
-
-pub async fn test() -> Html<&'static str> {
-    info!("Handling request.");
-    Html("<p>백엔드에서 받은 응답!</p>")
 }
 
 pub async fn is_alive() -> Json<ApiResponse<String>> {
