@@ -4,3 +4,12 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+tokio = {workspace = true}
+axum = {workspace = true}
+aide = {workspace = true}
+anyhow = {workspace = true}
+env_logger = {workspace = true}
+log = {workspace = true}
+
+routes = {path = "../routes"}
+services = {path = "../services"}
