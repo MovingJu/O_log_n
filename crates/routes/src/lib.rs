@@ -1,16 +1,19 @@
-mod prelude;
 mod index;
-mod log;
+mod info;
+mod prelude;
 
 pub mod apis {
     use super::{prelude::*, *};
-    use aide::{axum::ApiRouter, openapi::{OpenApi, Tag}};
+    use aide::{
+        axum::ApiRouter,
+        openapi::{OpenApi, Tag},
+    };
 
     pub fn route_settings(state: Arc<services::AppState>) -> (ApiRouter, OpenApi) {
         let (app, mut api) = [
             // Add routes here
             index::get_router(),
-            log::get_router(state)
+            info::get_router(state),
         ]
         .into_iter()
         .fold(
@@ -23,9 +26,10 @@ pub mod apis {
                 (app.merge(route.1), api)
             },
         );
-        api.tags.push(Tag{
+        api.tags.push(Tag {
             name: "log".to_string(),
-            description: Some("Logging routes".to_string()), ..Default::default()
+            description: Some("Logging routes".to_string()),
+            ..Default::default()
         });
         (app, api)
     }
@@ -53,9 +57,9 @@ pub mod apis {
 
         let router: ApiRouter = ApiRouter::new()
             .route(
-                "/",
+                "/docs",
                 get_with(
-                    Scalar::new("/docs/openapi.json")
+                    Scalar::new("/openapi.json")
                         .with_title(DOC_TITLE)
                         .axum_handler(),
                     |op| op.description("This documentation page."),
@@ -64,7 +68,7 @@ pub mod apis {
             .route(
                 "/redoc",
                 get_with(
-                    Redoc::new("/docs/openapi.json")
+                    Redoc::new("/openapi.json")
                         .with_title(DOC_TITLE)
                         .axum_handler(),
                     |op| op.description("This documentation page."),
@@ -73,7 +77,7 @@ pub mod apis {
             .route(
                 "/swagger",
                 get_with(
-                    Swagger::new("/docs/openapi.json")
+                    Swagger::new("/openapi.json")
                         .with_title(DOC_TITLE)
                         .axum_handler(),
                     |op| op.description("This documentation page."),

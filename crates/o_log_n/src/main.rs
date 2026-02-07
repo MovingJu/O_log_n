@@ -17,7 +17,7 @@ async fn main() -> Result<()> {
     // Build application with all routes
     let (app, api) = routes::apis::route_settings(state.clone());
     let app = app
-        .nest_api_service("/docs", routes::apis::docs_routes(state.clone()))
+        .merge(routes::apis::docs_routes(state.clone()))
         .route("/full_api.json", get(serve_api));
     run_server(app, api).await?;
 
