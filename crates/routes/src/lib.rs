@@ -3,9 +3,9 @@ mod index;
 
 pub mod apis {
     use aide::{axum::ApiRouter, openapi::OpenApi};
-    use std::sync::Arc;
+    use super::{prelude::*, *};
 
-    pub fn route_settings(state: Arc<RepoFactory>) -> (ApiRouter, OpenApi) {
+    pub fn route_settings(_state: Arc<services::AppState>) -> (ApiRouter, OpenApi) {
         [
             // Add routes here
             index::get_router(),
@@ -34,7 +34,7 @@ pub mod apis {
     };
     use axum::{Extension, Json, response::IntoResponse};
 
-    pub fn docs_routes(state: Arc<RepoFactory>) -> ApiRouter {
+    pub fn docs_routes(state: Arc<services::AppState>) -> ApiRouter {
         // We infer the return types for these routes
         // as an example.
         //

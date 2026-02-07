@@ -12,7 +12,7 @@ async fn main() -> Result<()> {
     // Initialize log level
     init_logger();
 
-    let state = std::sync::Arc::new(repository::RepoFactory::new(pool));
+    let state = std::sync::Arc::new(services::AppState::new());
 
     // Build application with all routes
     let (app, api) = routes::apis::route_settings(state.clone());

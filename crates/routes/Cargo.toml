@@ -7,5 +7,7 @@ edition = "2024"
 axum = {workspace = true}
 aide = {workspace = true, features = ["redoc", "swagger", "scalar", "axum-json", "axum-query"]}
 log = {workspace = true}
+schemars = {workspace = true}
+serde = {workspace = true}
 
 services = {path = "../services"}
