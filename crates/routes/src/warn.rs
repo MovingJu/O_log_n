@@ -3,29 +3,29 @@ use axum::{
     Json,
     extract::{Query, State},
 };
-use log::info;
+use log::warn;
 use services::AppState;
 
 use crate::prelude::*;
 
-pub(crate) fn get_router(state: Arc<AppState>) -> (Option<Tag>, ApiRouter) {
+pub fn get_router(state: Arc<AppState>) -> (Option<Tag>, ApiRouter) {
     (
         None,
         ApiRouter::new()
-            .api_route("/log/info", get(info))
+            .api_route("/log/warn", get(warn))
             .with_state(state)
             .with_tag("log"),
     )
 }
 
-pub(crate) async fn info(
+pub async fn warn(
     State(_state): State<Arc<AppState>>,
     Query(query): Query<LogQuery>,
 ) -> Json<ApiResponse<Empty>> {
-    info!("{}, {}, {}", query.service, query.trace_id, query.message);
+    warn!("{}, {}, {}", query.service, query.trace_id, query.message);
     Json(ApiResponse {
         code: ApiStatusCode(StatusCode::OK),
         resp: "ok".to_string(),
-        data: Empty{},
+        data: Empty{}
     })
 }

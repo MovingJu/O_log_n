@@ -5,7 +5,7 @@ use crate::prelude::*;
 
 /// # get_router
 /// Adds route easily in `main.rs` file.
-pub fn get_router() -> (Option<Tag>, ApiRouter) {
+pub(crate) fn get_router() -> (Option<Tag>, ApiRouter) {
     (
         Some(Tag {
             name: "Index".to_string(),
@@ -19,11 +19,11 @@ pub fn get_router() -> (Option<Tag>, ApiRouter) {
     )
 }
 
-pub async fn index() -> Redirect {
+pub(crate) async fn index() -> Redirect {
     Redirect::to("/docs")
 }
 
-pub async fn is_alive() -> Json<ApiResponse<String>> {
+pub(crate) async fn is_alive() -> Json<ApiResponse<String>> {
     Json(ApiResponse {
         code: ApiStatusCode(StatusCode::OK),
         resp: "ok".to_string(),

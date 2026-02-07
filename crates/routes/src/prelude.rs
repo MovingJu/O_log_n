@@ -7,7 +7,14 @@ pub use serde::{Deserialize, Serialize};
 pub use std::sync::Arc;
 use schemars::json_schema;
 
-pub trait RouterExt {
+#[derive(Deserialize, Clone, JsonSchema)]
+pub(crate) struct LogQuery {
+    pub service: String,
+    pub message: String,
+    pub trace_id: String,
+}
+
+pub(crate) trait RouterExt {
     fn with_prefix(self, prefix: &'static str) -> Self;
     fn with_tag(self, tag_name: &'static str) -> Self;
 }
@@ -21,7 +28,7 @@ impl RouterExt for ApiRouter {
 }
 
 #[derive(Serialize, JsonSchema, Default, Clone)]
-pub struct ApiResponse<T>
+pub(crate) struct ApiResponse<T>
 where
     T: JsonSchema,
 {
@@ -46,7 +53,7 @@ impl<T: JsonSchema> ApiResponse<T> {
 
 // Newtype for StatusCode
 #[derive(Clone)]
-pub struct ApiStatusCode(pub StatusCode);
+pub(crate) struct ApiStatusCode(pub StatusCode);
 impl JsonSchema for ApiStatusCode {
     fn inline_schema() -> bool {
         true
@@ -92,4 +99,4 @@ impl Serialize for ApiStatusCode {
 ///     data: Empty
 /// };
 /// ```
-pub struct Empty;
+pub(crate) struct Empty;
