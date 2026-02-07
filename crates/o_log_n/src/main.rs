@@ -1,38 +1,18 @@
 use aide::{
-    axum::{IntoApiResponse, routing::get},
+    axum::{ApiRouter, routing::get},
     openapi::OpenApi,
     transform::TransformOpenApi,
 };
 use anyhow::Result;
 use axum::{Extension, Json};
-use log::{debug, error, info};
-
-use prelude::*;
-
-mod prelude;
-mod repository;
-mod services;
-mod routes;
+use log::{error, info};
 
 #[tokio::main]
 async fn main() -> Result<()> {
     // Initialize log level
     init_logger();
 
-    // Load database
-    debug!("Loading env variables");
-    dotenv::dotenv().ok();
-    let database_url = match std::env::var("DATABASE_URL") {
-        Ok(v) => v,
-        Err(err) => {
-            error!("Fail to load DATABASE_URL from .env : {}", err);
-            panic!()
-        }
-    };
-    debug!("Complete to load variable DATABASE_URL");
-    let pool = PgPool::connect(&database_url).await?;
-    let state = Arc::new(repository::RepoFactory::new(pool));
-    debug!("Succesfully connect to Database");
+    let state = std::sync::Arc::new(repository::RepoFactory::new(pool));
 
     // Build application with all routes
     let (app, api) = routes::apis::route_settings(state.clone());
@@ -117,6 +97,6 @@ async fn wait_for_signal() {
 // Note that this clones the document on each request.
 // To be more efficient, we could wrap it into an Arc,
 // or even store it as a serialized string.
-async fn serve_api(Extension(api): Extension<OpenApi>) -> impl IntoApiResponse {
+async fn serve_api(Extension(api): Extension<OpenApi>) -> Json<OpenApi> {
     Json(api)
 }

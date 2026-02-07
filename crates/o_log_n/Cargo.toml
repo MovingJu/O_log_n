@@ -6,7 +6,7 @@ edition = "2024"
 [dependencies]
 tokio = {workspace = true}
 axum = {workspace = true}
-aide = {workspace = true}
+aide = {workspace = true, features = ["redoc", "swagger", "scalar", "axum-json", "axum-query"]}
 anyhow = {workspace = true}
 env_logger = {workspace = true}
 log = {workspace = true}

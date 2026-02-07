@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 axum = {workspace = true}
-aide = {workspace = true}
+aide = {workspace = true, features = ["redoc", "swagger", "scalar", "axum-json", "axum-query"]}
+log = {workspace = true}
 
 services = {path = "../services"}
