@@ -85,7 +85,7 @@ impl Serialize for ApiStatusCode {
 /// # Empty
 /// Describes `null` state for compiler to understand.
 /// ## How to use
-/// ```
+/// ```ignore
 /// let response = ApiResponse<Empty> {
 ///     code: 0,
 ///     resp: "ok".to_string(),
