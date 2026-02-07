@@ -1,6 +1,8 @@
+mod prelude;
 mod index;
 mod info;
-mod prelude;
+mod warn;
+mod error;
 
 pub mod apis {
     use super::{prelude::*, *};
@@ -13,7 +15,9 @@ pub mod apis {
         let (app, mut api) = [
             // Add routes here
             index::get_router(),
-            info::get_router(state),
+            info::get_router(state.clone()),
+            warn::get_router(state.clone()),
+            error::get_router(state.clone())
         ]
         .into_iter()
         .fold(
