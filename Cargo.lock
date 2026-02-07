@@ -799,6 +799,10 @@ dependencies = [
 [[package]]
 name = "services"
 version = "0.2.0"
+dependencies = [
+ "schemars",
+ "serde",
+]
 
 [[package]]
 name = "signal-hook-registry"

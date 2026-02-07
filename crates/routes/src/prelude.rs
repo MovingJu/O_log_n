@@ -2,14 +2,15 @@
 
 pub use aide::{axum::ApiRouter, openapi::Tag};
 pub use axum::http::StatusCode;
-pub use schemars::JsonSchema;
+pub use schemars::{JsonSchema, json_schema};
 pub use serde::{Deserialize, Serialize};
 pub use std::sync::Arc;
-use schemars::json_schema;
+
+use services::config;
 
 #[derive(Deserialize, Clone, JsonSchema)]
 pub(crate) struct LogQuery {
-    pub service: String,
+    pub service: config::Servers,
     pub message: String,
     pub trace_id: String,
 }

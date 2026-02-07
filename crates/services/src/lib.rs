@@ -1,3 +1,5 @@
+pub mod config;
+
 pub struct AppState {
     #[allow(unused)]
     pool: usize,

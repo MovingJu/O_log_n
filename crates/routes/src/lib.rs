@@ -50,14 +50,8 @@ pub mod apis {
     use axum::{Extension, Json, response::IntoResponse};
 
     pub fn docs_routes(state: Arc<services::AppState>) -> ApiRouter {
-        // We infer the return types for these routes
-        // as an example.
-        //
-        // As a result, the `serve_redoc` route will
-        // have the `text/html` content-type correctly set
-        // with a 200 status.
         aide::generate::infer_responses(true);
-        const DOC_TITLE: &str = "api.movingju.com";
+        const DOC_TITLE: &str = "o_log_n";
 
         let router: ApiRouter = ApiRouter::new()
             .route(
