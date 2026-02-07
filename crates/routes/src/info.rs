@@ -9,8 +9,6 @@ use services::AppState;
 
 use crate::prelude::*;
 
-/// # get_router
-/// Adds route easily in `main.rs` file.
 pub fn get_router(state: Arc<AppState>) -> (Option<Tag>, ApiRouter) {
     (
         None,

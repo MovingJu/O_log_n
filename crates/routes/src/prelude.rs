@@ -3,10 +3,9 @@
 pub use aide::{axum::ApiRouter, openapi::Tag};
 pub use axum::http::StatusCode;
 pub use schemars::JsonSchema;
-use schemars::json_schema;
-use serde::ser::SerializeStruct;
 pub use serde::{Deserialize, Serialize};
 pub use std::sync::Arc;
+use schemars::json_schema;
 
 pub trait RouterExt {
     fn with_prefix(self, prefix: &'static str) -> Self;
