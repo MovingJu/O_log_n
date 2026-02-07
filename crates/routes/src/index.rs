@@ -1,9 +1,5 @@
 use aide::axum::{ApiRouter, routing::get};
-use axum::{
-    Json,
-    response::Redirect,
-};
-use log::info;
+use axum::{Json, response::Redirect};
 
 use crate::prelude::*;
 
@@ -24,14 +20,12 @@ pub fn get_router() -> (Option<Tag>, ApiRouter) {
 }
 
 pub async fn index() -> Redirect {
-    info!("redirect user to docs");
     Redirect::to("/docs")
 }
 
 pub async fn is_alive() -> Json<ApiResponse<String>> {
-    info!("Server live test.");
     Json(ApiResponse {
-        code: 200,
+        code: ApiStatusCode(StatusCode::OK),
         resp: "ok".to_string(),
         data: "Server is alive!".to_string(),
     })

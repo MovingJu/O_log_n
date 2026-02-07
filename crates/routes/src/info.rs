@@ -1,8 +1,10 @@
 use aide::axum::{ApiRouter, routing::get};
 use axum::{
-    Json, extract::{Query, State}, 
+    Json,
+    extract::{Query, State},
 };
 // use log::info;
+use log::info;
 use services::AppState;
 
 use crate::prelude::*;
@@ -22,11 +24,20 @@ pub fn get_router(state: Arc<AppState>) -> (Option<Tag>, ApiRouter) {
 
 pub async fn info(
     State(_state): State<Arc<AppState>>,
-    Query(_query): Query<InfoQuery>
+    Query(query): Query<InfoQuery>,
 ) -> Json<ApiResponse<InfoResponse>> {
-    Json(ApiResponse { code: 0, resp: "ok".to_string(), data: InfoResponse {  } })
+    info!("{}, {}, {}", query.service, query.trace_id, query.message);
+    Json(ApiResponse {
+        code: ApiStatusCode(StatusCode::OK),
+        resp: "ok".to_string(),
+        data: InfoResponse {},
+    })
 }
 #[derive(Deserialize, JsonSchema)]
-pub struct InfoQuery {}
+pub struct InfoQuery {
+    service: String,
+    message: String,
+    trace_id: String,
+}
 #[derive(Serialize, JsonSchema)]
 pub struct InfoResponse {}
