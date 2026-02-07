@@ -1,0 +1,4 @@
+[tasks.watch]
+workspace = false
+command = "cargo"
+args = ["watch", "-x", "run", "-w", "crates"]

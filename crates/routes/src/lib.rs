@@ -1,9 +1,9 @@
-mod prelude;
 mod index;
+mod prelude;
 
 pub mod apis {
-    use aide::{axum::ApiRouter, openapi::OpenApi};
     use super::{prelude::*, *};
+    use aide::{axum::ApiRouter, openapi::OpenApi};
 
     pub fn route_settings(_state: Arc<services::AppState>) -> (ApiRouter, OpenApi) {
         [

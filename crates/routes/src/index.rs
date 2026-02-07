@@ -1,6 +1,4 @@
-use aide::{
-    axum::{ApiRouter, routing::get}
-};
+use aide::axum::{ApiRouter, routing::get};
 use axum::{
     Json,
     response::{Html, Redirect},
