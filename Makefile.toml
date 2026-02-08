@@ -2,6 +2,7 @@
 workspace = false
 command = "cargo"
 args = ["watch", "-x", "run", "-w", "crates"]
+env = { RUST_LOG = "o_log_n=info,aide=warn,axum=warn,tracing::span=warn" }
 
 [tasks.docker-build]
 workspace = false

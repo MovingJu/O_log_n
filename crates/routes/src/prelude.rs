@@ -2,11 +2,11 @@
 
 pub use aide::{axum::ApiRouter, openapi::Tag};
 pub use axum::http::StatusCode;
-pub use schemars::JsonSchema;
+pub use schemars::{JsonSchema, json_schema};
 pub use serde::{Deserialize, Serialize};
 pub use std::sync::Arc;
-use schemars::json_schema;
 
+<<<<<<< HEAD
 #[derive(Deserialize, Clone, JsonSchema)]
 pub(crate) struct LogQuery {
     pub service: String,
@@ -14,6 +14,8 @@ pub(crate) struct LogQuery {
     pub trace_id: String,
 }
 
+=======
+>>>>>>> develop
 pub(crate) trait RouterExt {
     fn with_prefix(self, prefix: &'static str) -> Self;
     fn with_tag(self, tag_name: &'static str) -> Self;

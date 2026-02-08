@@ -1,8 +1,10 @@
-mod prelude;
-mod index;
-mod info;
-mod warn;
 mod error;
+mod index;
+mod debug;
+mod info;
+mod log;
+mod prelude;
+mod warn;
 
 pub mod apis {
     use super::{prelude::*, *};
@@ -15,9 +17,11 @@ pub mod apis {
         let (app, mut api) = [
             // Add routes here
             index::get_router(),
+            log::get_router(state.clone()),
+            debug::get_router(state.clone()),
             info::get_router(state.clone()),
             warn::get_router(state.clone()),
-            error::get_router(state.clone())
+            error::get_router(state.clone()),
         ]
         .into_iter()
         .fold(
@@ -50,14 +54,8 @@ pub mod apis {
     use axum::{Extension, Json, response::IntoResponse};
 
     pub fn docs_routes(state: Arc<services::AppState>) -> ApiRouter {
-        // We infer the return types for these routes
-        // as an example.
-        //
-        // As a result, the `serve_redoc` route will
-        // have the `text/html` content-type correctly set
-        // with a 200 status.
         aide::generate::infer_responses(true);
-        const DOC_TITLE: &str = "api.movingju.com";
+        const DOC_TITLE: &str = "o_log_n";
 
         let router: ApiRouter = ApiRouter::new()
             .route(

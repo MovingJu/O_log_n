@@ -23,7 +23,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       
       - name: Build Docker image
-        run: docker build -t movingju/public:o_log_n .
+        run: docker buildx build --platform=linux/amd64,linux/arm64 -t movingju/public:o_log_n .
           
       - name: Push Docker image
         run: docker push movingju/public:o_log_n

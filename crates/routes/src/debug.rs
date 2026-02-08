@@ -3,7 +3,7 @@ use axum::{
     Json,
     extract::{Query, State},
 };
-use services::{AppState, config::LogQuery, prelude::state::*};
+use services::{AppState, config::LogQuery, prelude::state::LogState};
 
 use crate::prelude::*;
 
@@ -11,17 +11,17 @@ pub(crate) fn get_router(state: Arc<AppState>) -> (Option<Tag>, ApiRouter) {
     (
         None,
         ApiRouter::new()
-            .api_route("/log/error", get(error))
+            .api_route("/log/debug", get(debug))
             .with_state(state)
             .with_tag("log"),
     )
 }
 
-pub(crate) async fn error(
+pub(crate) async fn debug(
     State(state): State<Arc<AppState>>,
     Query(query): Query<LogQuery>,
 ) -> Json<ApiResponse<Empty>> {
-    match state.error.save(query).await {
+    match state.debug.save(query).await {
         Ok(..) => Json(ApiResponse {
             code: ApiStatusCode(StatusCode::OK),
             resp: "ok".to_string(),

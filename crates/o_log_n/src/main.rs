@@ -44,8 +44,8 @@ async fn run_server(app: ApiRouter, mut api: OpenApi) -> Result<()> {
 }
 
 fn api_docs(api: TransformOpenApi) -> TransformOpenApi {
-    api.title("api.movingju.com")
-        .summary("My public APIs")
+    api.title("o_log_n")
+        .summary("Logging server targets on speed")
         .security_scheme(
             "ApiKey",
             aide::openapi::SecurityScheme::ApiKey {
@@ -55,7 +55,7 @@ fn api_docs(api: TransformOpenApi) -> TransformOpenApi {
                 extensions: Default::default(),
             },
         )
-    // .description(include_str!("README.md"))
+        .description(include_str!("README.md"))
 }
 
 /// Initialize logger based on build mode
