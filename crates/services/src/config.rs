@@ -6,6 +6,7 @@ use serde::Deserialize;
 /// # Servers
 /// This restricts user's query
 #[derive(Deserialize, Clone, JsonSchema)]
+#[serde(rename_all="lowercase")]
 pub enum Servers {
     Auth,
     Handler,

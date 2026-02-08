@@ -1,5 +1,6 @@
 mod prelude;
 mod index;
+mod log;
 mod info;
 mod warn;
 mod error;
@@ -15,6 +16,7 @@ pub mod apis {
         let (app, mut api) = [
             // Add routes here
             index::get_router(),
+            log::get_router(state.clone()),
             info::get_router(state.clone()),
             warn::get_router(state.clone()),
             error::get_router(state.clone())
