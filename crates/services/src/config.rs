@@ -85,6 +85,6 @@ impl Serialize for DateTimeExt {
 
 impl Display for Servers {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", &self)
+        write!(f, "{}", self.as_ref())
     }
 }
