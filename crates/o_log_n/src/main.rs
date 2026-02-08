@@ -55,7 +55,7 @@ fn api_docs(api: TransformOpenApi) -> TransformOpenApi {
                 extensions: Default::default(),
             },
         )
-    .description(include_str!("README.md"))
+        .description(include_str!("README.md"))
 }
 
 /// Initialize logger based on build mode

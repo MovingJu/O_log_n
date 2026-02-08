@@ -4,5 +4,9 @@ version = "0.2.0"
 edition = "2024"
 
 [dependencies]
+tokio = {workspace = true}
+async-trait = {workspace = true}
 serde = {workspace = true}
 schemars = {workspace = true}
+chrono = {workspace = true}
+log = {workspace = true}

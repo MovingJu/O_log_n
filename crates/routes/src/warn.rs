@@ -3,8 +3,7 @@ use axum::{
     Json,
     extract::{Query, State},
 };
-use log::warn;
-use services::AppState;
+use services::{AppState, config::LogQuery, prelude::state::LogState};
 
 use crate::prelude::*;
 
@@ -19,13 +18,19 @@ pub fn get_router(state: Arc<AppState>) -> (Option<Tag>, ApiRouter) {
 }
 
 pub async fn warn(
-    State(_state): State<Arc<AppState>>,
+    State(state): State<Arc<AppState>>,
     Query(query): Query<LogQuery>,
 ) -> Json<ApiResponse<Empty>> {
-    warn!("{}, {}, {}", query.service, query.trace_id, query.message);
-    Json(ApiResponse {
-        code: ApiStatusCode(StatusCode::OK),
-        resp: "ok".to_string(),
-        data: Empty{}
-    })
+    match state.warn.save(query).await {
+        Ok(..) => Json(ApiResponse {
+            code: ApiStatusCode(StatusCode::OK),
+            resp: "ok".to_string(),
+            data: Empty {},
+        }),
+        Err(err) => Json(ApiResponse {
+            code: ApiStatusCode(StatusCode::INTERNAL_SERVER_ERROR),
+            resp: format!("Internal Error: {}", err),
+            data: Empty,
+        }),
+    }
 }

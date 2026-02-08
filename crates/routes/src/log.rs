@@ -1,10 +1,10 @@
 use aide::axum::{ApiRouter, routing::post};
-use axum::{
-    Json,
-    extract::State,
+use axum::{Json, extract::State};
+use services::{
+    AppState,
+    config::{Level, LogQuery},
+    prelude::state::LogState,
 };
-use log::{debug, error, info, warn};
-use services::AppState;
 
 use crate::prelude::*;
 
@@ -19,32 +19,31 @@ pub(crate) fn get_router(state: Arc<AppState>) -> (Option<Tag>, ApiRouter) {
 }
 
 pub(crate) async fn log(
-    State(_state): State<Arc<AppState>>,
+    State(state): State<Arc<AppState>>,
     Json(query): Json<LogQueryExt>,
 ) -> Json<ApiResponse<Empty>> {
-    match query.level {
-        Level::Debug => debug!("{}, {}, {}", query.query.service, query.query.trace_id, query.query.message),
-        Level::Info => info!("{}, {}, {}", query.query.service, query.query.trace_id, query.query.message),
-        Level::Warn => warn!("{}, {}, {}", query.query.service, query.query.trace_id, query.query.message),
-        Level::Error => error!("{}, {}, {}", query.query.service, query.query.trace_id, query.query.message)
+    let res = match query.level {
+        Level::Debug => state.debug.save(query.query).await,
+        Level::Info => state.info.save(query.query).await,
+        Level::Warn => state.warn.save(query.query).await,
+        Level::Error => state.error.save(query.query).await,
     };
-    Json(ApiResponse {
-        code: ApiStatusCode(StatusCode::OK),
-        resp: "ok".to_string(),
-        data: Empty{},
-    })
+    match res {
+        Ok(..) => Json(ApiResponse {
+            code: ApiStatusCode(StatusCode::OK),
+            resp: "ok".to_string(),
+            data: Empty {},
+        }),
+        Err(err) => Json(ApiResponse {
+            code: ApiStatusCode(StatusCode::INTERNAL_SERVER_ERROR),
+            resp: format!("Internal Error: {}", err),
+            data: Empty,
+        }),
+    }
 }
 
-#[derive(Deserialize, JsonSchema)]
+#[derive(Serialize, Deserialize, JsonSchema)]
 pub(crate) struct LogQueryExt {
     pub level: Level,
-    pub query: LogQuery
-}
-#[derive(Serialize, Deserialize, JsonSchema, Debug)]
-#[serde(rename_all="lowercase")]
-pub(crate) enum Level {
-    Debug,
-    Info,
-    Warn,
-    Error
+    pub query: LogQuery,
 }

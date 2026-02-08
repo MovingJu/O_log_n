@@ -1,9 +1,10 @@
-mod prelude;
-mod index;
-mod log;
-mod info;
-mod warn;
 mod error;
+mod index;
+mod debug;
+mod info;
+mod log;
+mod prelude;
+mod warn;
 
 pub mod apis {
     use super::{prelude::*, *};
@@ -17,9 +18,10 @@ pub mod apis {
             // Add routes here
             index::get_router(),
             log::get_router(state.clone()),
+            debug::get_router(state.clone()),
             info::get_router(state.clone()),
             warn::get_router(state.clone()),
-            error::get_router(state.clone())
+            error::get_router(state.clone()),
         ]
         .into_iter()
         .fold(
